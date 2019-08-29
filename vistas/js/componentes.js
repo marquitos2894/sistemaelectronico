@@ -1,4 +1,4 @@
-(function(){
+( async function(){
 
     /*$(document).ready(function(){
         $("#myInput").on("keyup", function() {
@@ -61,25 +61,104 @@
             //$('#data-container').html(template);    
         //}
 
+        this.renderComponentes = async function(){
+
+            document.querySelector('#buscador_comp').addEventListener("Onkeyup",function(ev){
+                ev.preventDefault();
+                console.log("1");
+                console.log(document.querySelector('#buscador_comp').value)
+            })
+
+        }
 
     }
-    
 
+    
     render = new render();
  
-    document.addEventListener("DOMContentLoaded",  function(){
-       //await render.renderComponentes();
+    await document.addEventListener("DOMContentLoaded", async function(){
+       //render.renderComponentes();
+        
+       console.log(document.querySelector('#buscador_comp_text').value)
+       let buscar = document.querySelector('#buscador_comp_text').value;
+       //let paginador = document.querySelector('#data-page').getAttribute('href');
+       let vista = document.querySelector('#vista').value
+       let privilegio = document.querySelector('#privilegio').value
+
+      
+       console.log(vista);
+
+       const datos = new FormData();
+       datos.append('buscarcompajax',buscar);
+       datos.append('paginadorajax',"");
+       datos.append('vistaajax',vista);
+       datos.append('privilegioajax',privilegio);
+       let response = await fetch('../ajax/componentesAjax.php',{
+           method : 'POST',
+           body : datos
+       })
+       let data = await response.text();
+       //console.log(data);
+
+       document.querySelector('#table_componente').innerHTML = data;
     })
 
+   await document.querySelector('#buscador_comp_text').addEventListener("keyup", async function(ev){
+        //ev.preventDefault();
+        //console.log("1");
+        //console.log(document.querySelector('#buscador_comp_text').value)
+        let buscar = document.querySelector('#buscador_comp_text').value;
+        let paginador = document.querySelector('#paginador').value
+        let vista = document.querySelector('#vista').value
+        let privilegio = document.querySelector('#privilegio').value
 
+        const datos = new FormData();
+        datos.append('buscarcompajax',buscar);
+        datos.append('paginadorajax',paginador);
+        datos.append('vistaajax',vista);
+        datos.append('privilegioajax',privilegio);
+        let response = await fetch('../ajax/componentesAjax.php',{
+            method : 'POST',
+            body : datos
+        })
+        let data = await response.text();
+        //console.log(data);
 
-    document.querySelector('#table_componente').addEventListener("click", async function(ev){
+        document.querySelector('#table_componente').innerHTML = data;
       
+    })
+
+    await document.querySelector('#table_componente').addEventListener("click", async function(ev){
+      
+        console.log(ev.target.dataset.page);
+        if(ev.target.id=='page'){
+            console.log(ev.target.dataset.page);
+            let buscar = document.querySelector('#buscador_comp_text').value;
+            let paginador = ev.target.dataset.page;
+            let vista = document.querySelector('#vista').value
+            let privilegio = document.querySelector('#privilegio').value
+    
+            const datos = new FormData();
+            datos.append('buscarcompajax',buscar);
+            datos.append('paginadorajax',paginador);
+            datos.append('vistaajax',vista);
+            datos.append('privilegioajax',privilegio);
+            let response = await fetch('../ajax/componentesAjax.php',{
+                method : 'POST',
+                body : datos
+            })
+            let data = await response.text();
+            //console.log(data);
+    
+            document.querySelector('#table_componente').innerHTML = data;
+        }
+
 
         if(ev.target.id == 'DeleteItem'){
             document.querySelector('#frmDeleteComp').submit();
         }
 
+        
         if(ev.target.id == 'EditItem'){
             let id_comp = ev.target.dataset.producto;
             //console.log(id_comp);

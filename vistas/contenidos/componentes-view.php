@@ -19,7 +19,10 @@ if(isset($_POST["eliminar_busqueda"])){
 
 ?>
 
-
+<input type="hidden" value="<?php echo $paginador ?>" id="paginador"/>
+<input type="hidden" value="<?php echo $vista ?>" id="vista"/>
+<input type="hidden" value="<?php echo $_SESSION['privilegio_sbp'] ?>" id="privilegio"/>
+     
     
 <div class="container-fluid"> 
   <ul class="nav nav-tabs">
@@ -33,92 +36,44 @@ if(isset($_POST["eliminar_busqueda"])){
           <a class="nav-link" href="<?php echo SERVERURL;?>componentesBaja/">Componentes dados de baja</a>
       </li>
   </ul><br>
-    <!--div class="row">
-      <form class="col s12">
-        <div class="row">
-          <div class="input-field col s6">
-            <input id="myInput" type="text">
-            <label for="myInputt">Buscar</label>
-          </div>
-        </div>
-      </form>
-    </div-->
-  
-        <!--table class="table table-striped" >
-            <thead>
-                <tr>
-                    <th scope="col">Cod interno</th>
-                    <th scope="col">descripcion</th>
-                    <th scope="col">nparte</th>
-                    <th scope="col">nparte2</th>
-                    <th scope="col">nparte3</th>
-                    <th scope="col">Marca</th>
-                    <th scope="col">Acciones</th>
-                </tr>
-            </thead>
-            <tbody id="myTableComp" >
 
-            </tbody>
-        </table-->
-    <!--div id="DT">
-      <table id="DTComponentes" class="display" style="width:100%">
-        <thead>
-            <tr>
-                <th>Codigo</th>
-                <th>Descripcion</th>
-                <th>Nparte</th>
-                <th>Nparte 2</th>
-                <th>Nparte 3</th>
-                <th>Marca</th>
-                <th>U.M</th>
-                <th>Control Stock</th>
-                <th>Acciones</th>
-
-            </tr>
-        </thead>
-        <tfoot>
-            <tr>
-                <th>Codigo</th>
-                <th>Descripcion</th>
-                <th>Nparte</th>
-                <th>Nparte 2</th>
-                <th>Nparte 3</th>
-                <th>Marca</th>
-                <th>U.M</th>
-                <th>Control Stock</th>
-                <th>Acciones</th>
-            </tr>
-        </tfoot>
-      </table>
-        
-    </div-->
-  <form action="" method="POST">
+  <!--form action="" method="POST">
     <div class="input-group mb-3">
       <div class="input-group-prepend">
         <button class="btn btn-primary" type="submit"  id="buscador_comp">Buscar</button>
       </div>
-      <input type="text" name="buscador_comp" class="form-control" placeholder="Buscar Componente" aria-label="Buscar componente" aria-describedby="button-addon1">
+      <input type="text" name="buscador_comp" id="buscador_comp_text" class="form-control" placeholder="Buscar Componente" aria-label="Buscar componente" aria-describedby="button-addon1">
     </div>
-  </form>
+  </form-->
 
 
-  <?php   if(!isset($_SESSION['session_'.$vista]) && empty($_SESSION['session_'.$vista])): ?>
+    <div class="input-group mb-3">
+      <input type="text" name="buscador_comp" id="buscador_comp_text" class="form-control" placeholder="Buscar Componente" aria-label="Buscar componente" aria-describedby="button-addon1">
+    </div>
 
-    <?php  echo $compCont->paginador_componentes($paginador,10,$_SESSION['privilegio_sbp'],"",$vista);  ?>
 
-  <?php else: ?>
-      <h3><small class='text-muted'>Su ultima busqueda fue : </small>"<?php echo $_SESSION['session_'.$vista]?>"</h3>
-      <form action="" method="POST">
+  <?php   //if(!isset($_SESSION['session_'.$vista]) && empty($_SESSION['session_'.$vista])): ?>
+
+    <?php // echo $compCont->paginador_componentes($paginador,10,$_SESSION['privilegio_sbp'],"",$vista);  ?>
+
+  <?php //else: ?>
+      <!--h3><small class='text-muted'>Su ultima busqueda fue : </small>"<?php //echo $_SESSION['session_'.$vista]?>"</h3-->
+      <!--form action="" method="POST">
     <div class="input-group mb-3">
       <div class="input-group-prepend">
         <button class="btn btn-danger" type="submit">Eliminar busqueda</button>
       </div>
       <input type="hidden" name="eliminar_busqueda" >
     </div>
-  </form>
-    <?php  echo $compCont->paginador_componentes($paginador,10,$_SESSION['privilegio_sbp'],$_SESSION['session_'.$vista],$vista);  ?>
+  </form-->
+    <?php  //echo $compCont->paginador_componentes($paginador,10,$_SESSION['privilegio_sbp'],$_SESSION['session_'.$vista],$vista);  ?>
     
-  <?php endif; ?>
+  <?php //endif; ?>
+
+ 
+  <div id="table_componente"></div>
+
+
     <!-- Modal -->
     <div class="modal fade" id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">

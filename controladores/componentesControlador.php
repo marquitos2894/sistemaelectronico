@@ -207,7 +207,7 @@ Class componentesControlador extends componentesModelo {
 
         $tabla.='</tbody></table></div>';
    
-        $tabla.= mainModel::paginador($total,$paginador,$Npaginas,$vista);
+        $tabla.= mainModel::paginador_ajax($total,$paginador,$Npaginas,$vista);
         return $tabla;
     }
 

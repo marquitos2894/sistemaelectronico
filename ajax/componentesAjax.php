@@ -39,6 +39,13 @@ if(isset($_POST["descripcion_formEdit"]) && isset($_POST["nparte1"])){
 }
 
 
+//VISTA COMPONENTES
+
+if(isset($_POST["buscarcompajax"])){
+  echo $compCont->paginador_componentes($_POST["paginadorajax"],10,0,$_POST["buscarcompajax"],$_POST["vistaajax"]);
+}
+
+
 //VISTA DATOSREFERENCIA-VIEW
 
 
