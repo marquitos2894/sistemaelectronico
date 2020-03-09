@@ -1,5 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/appconmi/public_html/test2/
+    - export DEPLOYPATH=/home/appconmi/public_html/sistemaelectronico/
     - /bin/cp -R * $DEPLOYPATH
