@@ -1,0 +1,603 @@
+
+/********* SP PERSONAL **************/
+/*1*/
+DELIMITER //
+CREATE PROCEDURE u_personal(
+IN p_id_per int,
+IN p_Nom_per varchar(50),
+IN p_Ape_per varchar(50),
+IN p_Dni_per varchar(20),
+IN p_brevete varchar(20),
+IN p_Telefono_per int,
+IN p_Direccion_per varchar(100),
+IN p_Region_per varchar(50),
+IN p_Ciudad_per varchar(50),
+IN p_Distrito_per varchar(50),
+IN p_urlimagen varchar(500),
+IN p_idcargo int,
+IN p_idunidad int,
+IN p_Correoe_per varchar(50)
+)
+BEGIN
+	UPDATE personal SET
+	Nom_per = p_Nom_per,
+	Ape_per = p_Ape_per,
+	Dni_per = p_Dni_per,
+	brevete = p_brevete,
+	Telefono_per = p_Telefono_per,
+	Direccion_per = p_Direccion_per,
+	Region_per = p_Region_per,
+	Ciudad_per = p_Ciudad_per,
+	Distrito_per = p_Distrito_per,
+	urlimagen = p_urlimagen,
+	id_cargo = p_idcargo,
+	idunidad = p_idunidad,
+	Correoe_per = p_Correoe_per
+	WHERE id_per = p_id_per;
+END //
+DELIMITER //
+
+/*2*/
+DELIMITER //
+CREATE PROCEDURE d_personal(
+IN p_id_per int
+)
+BEGIN 
+	UPDATE personal SET est = 0 WHERE id_per = p_id_per;
+END //
+DELIMITER //
+
+/*3*/
+DELIMITER //
+CREATE PROCEDURE dar_baja_personal(
+IN p_id_per int
+)
+BEGIN 
+	UPDATE personal SET est_baja = 0 WHERE id_per = p_id_per;
+END //
+DELIMITER //
+
+/*********************** SP UNIDAD_EQUIPO *************************/
+/*4*/
+DELIMITER //
+CREATE PROCEDURE dardebaja_equipo_unidad (
+IN p_id_equipounidad int
+)
+BEGIN
+UPDATE equipo_unidad SET est_baja = 0 WHERE id_equipounidad = p_id_equipounidad;
+END //
+DELIMITER //
+
+/*5*/
+DELIMITER //
+CREATE PROCEDURE dardealta_equipo_unidad (
+IN p_id_equipounidad int
+)
+BEGIN
+	UPDATE equipo_unidad SET est_baja = 1 WHERE id_equipounidad = p_id_equipounidad;
+END //
+DELIMITER //
+
+/*6*/
+DELIMITER //
+CREATE PROCEDURE d_equipo_unidad (
+IN p_id_equipounidad int
+)
+BEGIN
+ UPDATE equipo_unidad SET est = 0 WHERE id_equipounidad = p_id_equipounidad;
+END //
+DELIMITER //
+
+/*7*/
+DELIMITER //
+CREATE PROCEDURE u_unidad_equipo(
+IN p_id_equipounidad int,
+IN p_alias_equipounidad varchar(30),
+IN p_estado_equipounidad varchar(30)
+)
+BEGIN
+	UPDATE equipo_unidad SET 
+	alias_equipounidad = p_alias_equipounidad,
+	estado_equipounidad = p_estado_equipounidad
+	WHERE id_equipounidad = p_id_equipounidad;
+END //
+DELIMITER //
+
+
+/*8*/
+/*********************** SP LOGIN *************************/
+DELIMITER //
+CREATE PROCEDURE login(
+IN p_correo varchar(50),
+IN p_clave varchar(50)
+)
+BEGIN 
+SELECT u.id_usu,u.fk_idper,u.Correo,u.Nombre,u.Apellido,u.privilegio,u.tipo,u.imagen,p.idunidad,u.vistas
+FROM usuario u
+INNER JOIN personal p ON p.id_per = u.fk_idper
+WHERE Correo=p_correo and Clave= p_clave;
+END //
+DELIMITER //
+
+/*********************** SP EQUIPOS *************************/
+/*9*/
+DELIMITER //
+CREATE PROCEDURE u_equipos(
+IN p_Id_Equipo int,
+IN p_Modelo_Equipo varchar(30),
+IN p_Tipo_Equipo varchar(30),
+IN p_Aplicacion_Equipo varchar(30),
+IN p_Marca_Equipo varchar(30),
+IN p_NSerie_Equipo varchar(30),
+IN p_Capacidad_Equipo varchar(20),
+IN p_AnoFab_Equipo varchar(10),
+IN p_ModeloMotor_Equipo varchar(30),
+IN p_MarcaMotor_Equipo varchar(20),
+IN p_SerieMotor_Equipo varchar(30)
+)
+BEGIN 
+	UPDATE equipos SET
+	Modelo_Equipo = p_Modelo_Equipo,
+	Tipo_Equipo = p_Tipo_Equipo,
+	Aplicacion_Equipo = p_Aplicacion_Equipo,
+	Marca_Equipo = p_Marca_Equipo,
+	NSerie_Equipo = p_NSerie_Equipo,
+	Capacidad_Equipo = p_Capacidad_Equipo,
+	AnoFab_Equipo = p_AnoFab_Equipo,
+	ModeloMotor_Equipo = p_ModeloMotor_Equipo,
+	MarcaMotor_Equipo = p_MarcaMotor_Equipo,
+	SerieMotor_Equipo = p_SerieMotor_Equipo
+	WHERE Id_Equipo = p_Id_Equipo;
+END //
+DELIMITER //
+
+/*10*/
+DELIMITER //
+CREATE PROCEDURE i_equipos(
+IN p_Modelo_Equipo varchar(30),
+IN p_Tipo_Equipo varchar(30),
+IN p_Aplicacion_Equipo varchar(30),
+IN p_Marca_Equipo varchar(30),
+IN p_NSerie_Equipo varchar(30),
+IN p_Capacidad_Equipo varchar(20),
+IN p_AnoFab_Equipo varchar(10),
+IN p_ModeloMotor_Equipo varchar(30),
+IN p_MarcaMotor_Equipo varchar(20),
+IN p_SerieMotor_Equipo varchar(30),
+IN p_id_categoria int
+)
+BEGIN 
+	INSERT INTO equipos (Modelo_Equipo,Tipo_Equipo,Aplicacion_Equipo,Marca_Equipo,NSerie_Equipo,
+	Capacidad_Equipo,AnoFab_Equipo,ModeloMotor_Equipo,MarcaMotor_Equipo,SerieMotor_Equipo,id_categoria,idunidad)
+	VALUES (p_Modelo_Equipo,p_Tipo_Equipo,p_Aplicacion_Equipo,p_Marca_Equipo,p_NSerie_Equipo,p_Capacidad_Equipo,p_AnoFab_Equipo,p_ModeloMotor_Equipo,
+	p_MarcaMotor_Equipo,p_SerieMotor_Equipo,p_id_categoria,1);
+END //
+DELIMITER //
+
+/*11*/
+DELIMITER //
+CREATE PROCEDURE dardebaja_equipos (
+IN p_Id_Equipo int
+)
+BEGIN
+ UPDATE equipos SET est_baja = 0 WHERE Id_Equipo = p_Id_Equipo;
+END //
+DELIMITER //
+
+/*12*/
+DELIMITER //
+CREATE PROCEDURE d_equipos (
+IN Id_Equipo int
+)
+BEGIN
+	UPDATE equipos SET est_baja = 1 WHERE var_propiedad = 1;
+END //
+DELIMITER //
+
+/*********************** SP REFERENCIA *************************/
+/*13*/
+DELIMITER //
+CREATE PROCEDURE i_dato_referencia(
+IN p_dato_referencia varchar(50),
+IN p_descripcion_dr varchar(100),
+IN p_fkidunidad int
+)
+BEGIN 
+	INSERT INTO datos_referencia(dato_referencia,descripcion_dr,fk_idunidad)
+	VALUES (p_dato_referencia,p_descripcion_dr,p_fkidunidad);
+END //
+DELIMITER //
+
+/*14*/
+DELIMITER //
+CREATE PROCEDURE u_datos_referencia(
+IN p_id_dr int,
+IN p_dato_referencia varchar(50),
+IN p_descripcion_dr varchar(100)
+)
+BEGIN 
+	UPDATE datos_referencia SET
+	dato_referencia = p_dato_referencia,
+	descripcion_dr = p_descripcion_dr 
+	WHERE id_dr = p_id_dr;
+END //
+DELIMITER //
+
+/*15*/
+DELIMITER //
+CREATE PROCEDURE d_datos_referencia(
+IN p_id_dr int
+)
+BEGIN 
+	DELETE FROM datos_referencia
+	WHERE id_dr = p_id_dr;
+END //
+DELIMITER //
+
+
+/*********************** SP UNIDAD MEDIDA *************************/
+/*16*/
+DELIMITER //
+CREATE PROCEDURE u_unidadmed(
+IN p_id_unidad_med int,
+IN p_descripcion varchar(50),
+IN p_abreviado varchar(20)
+)
+BEGIN
+	UPDATE unidad_medida SET 
+	descripcion = p_descripcion,
+	abreviado = p_abreviado
+	WHERE id_unidad_med = p_id_unidad_med;
+END //
+DELIMITER //
+
+/*17*/
+DELIMITER //
+CREATE PROCEDURE d_unidadmed(
+IN p_id_unidad_med int
+)
+BEGIN
+	UPDATE unidad_medida SET est = 0
+	WHERE id_unidad_med = p_id_unidad_med;
+END //
+DELIMITER //
+
+/*18*/
+DELIMITER //
+CREATE PROCEDURE i_unidadmed(
+IN p_descripcion varchar(50),
+IN p_abreviado varchar(20)
+)
+BEGIN
+	INSERT INTO unidad_medida (descripcion,abreviado) 
+	VALUES (p_descripcion,p_abreviado);
+END //
+DELIMITER //
+
+
+/*********************** SP COMPONENTES *************************/
+
+/*DAR BAJA COMPONENTE GLOBAL y ALTA*/
+/*19*/
+DELIMITER //
+create procedure darBaja_global_componente(
+IN p_id_comp int
+)
+BEGIN 
+	UPDATE componentes SET est_baja = 0 WHERE id_comp = p_id_comp;
+	UPDATE almacen_componente SET est_global = 0 WHERE fk_idcomp = p_id_comp;
+	SELECT @var := 1;
+END //
+DELIMITER //
+
+/*20*/
+DELIMITER //
+create procedure darAlta_global_componente(
+IN p_id_comp int
+)
+BEGIN 
+	UPDATE componentes SET est_baja = 1 WHERE id_comp = p_id_comp;
+	UPDATE almacen_componente SET est_global = 1 WHERE fk_idcomp = p_id_comp;
+	SELECT @var := 1;
+END //
+DELIMITER //
+
+/*21*/
+DELIMITER //
+create procedure del_global_componente(
+IN p_id_comp int
+)
+BEGIN 
+	UPDATE componentes SET est = 0 WHERE id_comp = p_id_comp;
+END //
+DELIMITER ;
+
+
+/*REGISTRAR COMPONENTE GLOBAL*/
+/*22*/
+DELIMITER //
+CREATE PROCEDURE i_componentesnew(
+IN p_descripcion varchar(50),
+IN p_nparte1 varchar(15),
+IN p_nparte2 varchar(15),
+IN p_nparte3 varchar(15),
+IN p_marca varchar(20),
+IN p_id_unidad_med int,
+IN p_nserie varchar(30),
+IN p_medida varchar(20),
+IN p_idcategoria int
+
+)
+BEGIN 
+INSERT INTO componentes (descripcion,nparte1,nparte2,nparte3,nserie,marca,fk_idunidad_med,medida,fk_idcategoria)				VALUES (p_descripcion,p_nparte1,p_nparte2,p_nparte3,p_nserie,p_marca,p_id_unidad_med,p_medida,p_idcategoria);
+END //
+DELIMITER //
+
+/*23*/
+DELIMITER //
+CREATE PROCEDURE u_componentes(
+	IN p_id_comp int,
+	IN p_descripcion varchar(50),
+	IN p_nparte1 varchar(15),
+	IN p_nparte2 varchar(15),
+	IN p_nparte3 varchar(15),
+	IN p_marca varchar(20),
+	IN p_id_unidad_med int,
+	IN p_nserie varchar(30),
+	IN p_medida varchar(20),
+	IN p_idcategoria int
+)
+BEGIN 
+	UPDATE componentes SET 
+	descripcion = p_descripcion,
+	nparte1 = p_nparte1,
+	nparte2 = p_nparte2,
+	nparte3 = p_nparte3,
+	marca = p_marca,
+	nserie = p_nserie,
+	fk_idunidad_med = p_id_unidad_med,
+	medida = p_medida,
+	fk_idcategoria = p_idcategoria
+	WHERE id_comp = p_id_comp;
+END //
+DELIMITER //
+
+/*24*/
+DELIMITER //
+CREATE PROCEDURE v_comp_general()
+BEGIN	
+	SELECT * FROM componentes WHERE est = 1;
+END //
+DELIMITER //
+
+--------------------------------------
+/*25*/
+/*
+DELIMITER //
+CREATE PROCEDURE i_registroalmacen (
+IN p_fk_idalm int,
+IN p_fk_idcomp int,
+IN p_stock double(5,2),
+IN p_u_nom varchar(10),
+IN p_u_sec varchar(10),
+IN p_fk_idequipo int,
+IN p_Referencia varchar(60)
+)
+BEGIN
+INSERT INTO almacen_componente(fk_idalm,fk_idcomp,stock,u_nombre,u_seccion,fk_Id_Equipo,referencia)
+		VALUES (p_fk_idalm,p_fk_idcomp,p_stock,p_u_nom,p_u_sec,p_fk_idequipo,p_Referencia);
+END //
+DELIMITER //
+*/
+
+/*NUEVA VERSION DE i_registroalmacen*/
+/*26*/
+DELIMITER //
+CREATE PROCEDURE i_registroalmacen (
+IN p_fk_idalm int,
+IN p_fk_idcomp int,
+IN p_stock double(5,2),
+IN p_u_nom varchar(10),
+IN p_u_sec varchar(10),
+IN p_fk_idequipo int,
+IN p_Referencia varchar(60)
+)
+BEGIN
+					
+SELECT @var_cs := count(cs.fk_idcomp) from control_stock cs where fk_idcomp = p_fk_idcomp AND fk_idalm = p_fk_idalm;
+
+	IF @var_cs = 1 THEN
+			INSERT INTO almacen_componente(fk_idalm,fk_idcomp,stock,u_nombre,u_seccion,fk_Id_Equipo,referencia,control_stock)
+			VALUES (p_fk_idalm,p_fk_idcomp,p_stock,p_u_nom,p_u_sec,p_fk_idequipo,p_Referencia,1);
+	ELSE
+			INSERT INTO almacen_componente(fk_idalm,fk_idcomp,stock,u_nombre,u_seccion,fk_Id_Equipo,referencia,control_stock)
+			VALUES (p_fk_idalm,p_fk_idcomp,p_stock,p_u_nom,p_u_sec,p_fk_idequipo,p_Referencia,0);
+	END IF;
+
+END //
+DELIMITER //
+
+
+/********************************************/
+/*27*/
+DELIMITER //
+create procedure resta_stock
+(
+in id_compo_sali int,
+in id_alm int,
+in id_salida int,
+in cant int
+)
+BEGIN
+insert into componentes_salida values (id_compo_sali,id_alm,id_salida,cant);
+update componentes c ,componentes_salida cs
+set c.cant = c.cant - cs.cant where cs.id_compo_sali = id_compo_sali  and c.id_alm = id_alm;
+END //
+DELIMITER //
+
+/************* SP UPDATE COMP_ALMACEN ************/
+
+/*NUEVO PROCEDURE REEMPLAZA AL ANTERIOR*/
+/*Actualiza la configuracion de mov de lugar, conf de stock min y max*/
+
+/*28*/
+DELIMITER //
+CREATE PROCEDURE u_comp_almacen(
+	IN p_fk_idalm int,
+	IN p_fk_idcomp int,
+	IN p_id_ac int,
+	IN p_u_nom varchar(10),
+	IN p_u_sec varchar(10),
+	IN p_fk_idflota int,
+	IN p_Referencia varchar(60),
+	IN p_control_stock int,
+	IN p_cs_incial int,
+	IN p_stock_min double(5,2),
+ 	IN p_stock_max double(5,2)
+)
+
+BEGIN 
+	UPDATE almacen_componente SET 
+	u_nombre = p_u_nom,
+	u_seccion = p_u_sec,
+	fk_idflota = p_fk_idflota,
+	Referencia = p_Referencia
+	WHERE fk_idalm = p_fk_idalm AND id_ac = p_id_ac;
+	
+	UPDATE almacen_componente SET
+	control_stock = p_control_stock
+	WHERE fk_idcomp = p_fk_idcomp AND fk_idalm = p_fk_idalm;
+	
+	IF p_control_stock = 1 THEN
+		SELECT @tot_stock := SUM(ac.stock) FROM almacen_componente ac WHERE ac.fk_idcomp = p_fk_idcomp AND ac.fk_idalm = p_fk_idalm;
+		
+		IF p_cs_incial = 1 THEN
+			UPDATE control_stock SET stock =  @tot_stock,stock_min = p_stock_min, stock_max = p_stock_max
+			WHERE fk_idcomp = p_fk_idcomp  and fk_idalm = p_fk_idalm;
+		ELSE
+			INSERT INTO control_stock(fk_idcomp,fk_idalm,stock,stock_min,stock_max)
+			VALUES(p_fk_idcomp,p_fk_idalm,@tot_stock,p_stock_min,p_stock_max);
+		END IF;
+	
+	ELSE
+		DELETE FROM control_stock	
+		WHERE fk_idcomp = p_fk_idcomp AND fk_idalm = p_fk_idalm;
+		SELECT @var := 1;
+		
+	END IF;
+END //
+DELIMITER //
+---------------------
+
+/*PROCEDURE ELIMINAR COMPONENTE DE ALMACEN_COMPONENTE 07-08-2019*/
+/*VALIDANDO CONTROL CONTROL STOCK*/
+
+/*29*/
+DELIMITER //
+CREATE PROCEDURE delete_componente_almacen(
+IN p_id_ac int,
+IN p_fk_idcomp int,
+IN p_fk_idalm int
+)
+BEGIN
+	UPDATE almacen_componente SET est = 0 WHERE id_ac = p_id_ac;
+	
+	SELECT @TotReg:=COUNT(*)
+	FROM almacen_componente WHERE fk_idcomp = p_fk_idcomp AND fk_idalm = p_fk_idalm AND est = 1;
+	
+	IF @TotReg = 0 THEN
+		DELETE FROM control_stock	
+		WHERE fk_idcomp = p_fk_idcomp AND fk_idalm = p_fk_idalm;
+	END IF;
+END //
+DELIMITER //
+
+
+/**************** VALE INGRESO *****************************/
+
+/*30*/
+DELIMITER //
+create procedure i_valeingreso(
+IN p_id_alm int,
+IN p_fk_idusuario int,
+IN p_fk_idpersonal int,
+IN p_nombres varchar(100),
+IN p_d_identidad varchar(15),
+IN p_ref_documento varchar(20),
+IN p_ref_nrodocumento varchar(20),
+IN p_fecha DATETIME,
+IN p_fecha_llegada DATE,
+IN p_turno varchar(15),
+IN p_comentario varchar(100)
+)
+begin
+		select IF(@v_vale := max(id_vingreso)+1 IS NULL,@v_vale:= 1,@v_vale := max(id_vingreso)+1) as id_valein  from vale_ingreso where fk_idalm=p_id_alm;
+		insert into vale_ingreso  (id_vingreso,fk_idalm,fk_idusuario,fk_idpersonal,nombres,d_identidad,ref_documento,ref_nrodocumento,fecha,fecha_llegada,turno,comentario) 
+		values(@v_vale,p_id_alm,p_fk_idusuario,p_fk_idpersonal,p_nombres,p_d_identidad,p_ref_documento,p_ref_nrodocumento,p_fecha,p_fecha_llegada,p_turno,p_comentario);
+	
+END //
+DELIMITER //
+
+
+/**********************************************
+**************VALE SALIDA*******************/
+/*31*/	
+DELIMITER //
+CREATE PROCEDURE `i_valesalida`(
+	IN `p_id_alm` int,
+	IN `p_fk_idusuario` int,
+	IN `p_fk_idpersonal` int,
+	IN `p_nombres` varchar(100),
+	IN `p_d_identidad` varchar(15),
+	IN `p_fecha` DATETIME,
+	IN `p_fecha_despacho` DATETIME,
+	IN `p_turno` varchar(15),
+	IN `p_comentario` varchar(100),
+	IN `p_dr_referencia` VARCHAR(40)
+
+)
+BEGIN
+		select IF(@v_vale := max(id_vsalida)+1 IS NULL,@v_vale:= 1,@v_vale := max(id_vsalida)+1) as id_valesa  from vale_salida where fk_idalm=p_id_alm;
+		insert into vale_salida  (id_vsalida,fk_idalm,fk_idusuario,fk_idpersonal,nombres,d_identidad,fecha,fecha_despacho,turno,comentario,dr_referencia) 
+		values(@v_vale,p_id_alm,p_fk_idusuario,p_fk_idpersonal,p_nombres,p_d_identidad,p_fecha,p_fecha_despacho,p_turno,p_comentario,p_dr_referencia);
+END //
+DELIMITER //
+
+	
+/*32*/
+DELIMITER //
+create procedure anular_vale_salida(
+IN p_id_vsalida int,
+IN p_id_alm int
+)
+BEGIN 
+	UPDATE vale_salida SET est = 0 WHERE id_vsalida = p_id_vsalida AND fk_idalm=p_id_alm;
+	UPDATE detalle_vale_salida SET est = 0 WHERE fk_vsalida = p_id_vsalida AND fk_id_almacen=p_id_alm;
+END //
+DELIMITER //
+
+/*33*/
+DELIMITER //
+create procedure anular_vale_ingreso(
+IN p_id_vingreso int,
+IN p_id_alm int
+)
+BEGIN 
+	UPDATE vale_ingreso SET est = 0 WHERE id_vingreso = p_id_vingreso AND fk_idalm=p_id_alm;
+	UPDATE detalle_vale_ingreso SET est = 0 WHERE fk_id_vingreso = p_id_vingreso AND fk_id_almacen=p_id_alm;
+END //
+DELIMITER //
+
+/*37*/
+DELIMITER //
+CREATE PROCEDURE i_equipo_unidad (
+IN p_fk_idequipo int,
+IN p_fk_idunidad int,
+IN p_alias_equipounidad varchar(30),
+IN p_estado_equipounidad varchar(30)
+)
+BEGIN
+	INSERT INTO equipo_unidad (fk_idequipo,fk_idunidad,alias_equipounidad,estado_equipounidad)
+	VALUES(p_fk_idequipo,p_fk_idunidad,p_alias_equipounidad,p_estado_equipounidad);
+END //
+DELIMITER //
